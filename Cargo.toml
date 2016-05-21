@@ -1,0 +1,9 @@
+[package]
+name = "jservice"
+version = "0.1.0"
+authors = ["Brandon King <wektorious@gmail.com>"]
+
+description = "A jService API wrapper."
+license = "Apache-2.0"
+
+[dependencies]
