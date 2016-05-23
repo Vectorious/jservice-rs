@@ -2,11 +2,20 @@
 name = "jservice"
 version = "0.1.0"
 authors = ["Brandon King <wektorious@gmail.com>"]
+build = "build.rs"
 
 description = "A jService API wrapper."
 license = "Apache-2.0"
 
+[build-dependencies]
+serde_codegen = "*"
+syntex = "*"
+
 [dependencies]
-chrono = "0.2"
 hyper = "0.9.5"
-serde_json = "0.7.0"
+serde = "*"
+serde_json = "*"
+
+[dependencies.chrono]
+version = "0.2"
+features = ["serde"]

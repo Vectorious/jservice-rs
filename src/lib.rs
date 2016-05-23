@@ -1,6 +1,6 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}
+extern crate serde;
+extern crate serde_json;
+extern crate hyper;
+extern crate chrono;
+
+include!(concat!(env!("OUT_DIR"), "/lib.rs"));

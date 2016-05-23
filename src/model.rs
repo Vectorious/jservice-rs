@@ -1,10 +1,11 @@
 use chrono::*;
 
+#[derive(Deserialize)]
 pub struct Clue {
     pub id: u64,
     pub answer: String,
     pub question: String,
-    pub value: i32,
+    pub value: Option<i32>,
     pub airdate: DateTime<UTC>,
     pub created_at: Option<DateTime<UTC>>,
     pub updated_at: Option<DateTime<UTC>>,
@@ -14,6 +15,7 @@ pub struct Clue {
     pub category: Option<Category>,
 }
 
+#[derive(Deserialize)]
 pub struct Category {
     pub id: u64,
     pub title: String,

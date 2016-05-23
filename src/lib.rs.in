@@ -1,0 +1,103 @@
+pub mod model;
+
+use chrono::*;
+use hyper::{Client, Url};
+
+use model::*;
+
+const API_URI: &'static str = "http://jservice.io/api/";
+
+pub fn get_clues(value: Option<i32>, category: Option<u32>, min_date: Option<DateTime<UTC>>,
+             max_date: Option<DateTime<UTC>>, offset: Option<u32>)
+             -> Result<Vec<Clue>, String> {
+    let mut params: Vec<(&'static str, String)> = Vec::new();
+    if value.is_some() {
+        params.push(("value", value.unwrap().to_string()));
+    }
+    if category.is_some() {
+        params.push(("category", category.unwrap().to_string()));
+    }
+    if min_date.is_some() {
+        params.push(("min_date", min_date.unwrap().to_string()));
+    }
+    if max_date.is_some() {
+        params.push(("max_date", max_date.unwrap().to_string()));
+    }
+    if offset.is_some() {
+        params.push(("offset", offset.unwrap().to_string()));
+    }
+
+    match get_api("clues", &params) {
+        Ok(resp) => {
+            parse_response(&resp)
+        }
+        Err(e) => { Err(e) }
+    }
+}
+
+pub fn get_random(count: Option<u32>) -> Result<Vec<Clue>, String> {
+    let mut params: Vec<(&'static str, String)> = Vec::new();
+    if count.is_some() {
+        params.push(("count", count.unwrap().to_string()));
+    }
+
+    match get_api("random", &params) {
+        Ok(resp) => {
+            parse_response(&resp)
+        }
+        Err(e) => { Err(e) }
+    }
+}
+
+pub fn get_categories(count: Option<u32>, offset: Option<u32>) -> Result<Vec<Category>, String> {
+    let mut params: Vec<(&'static str, String)> = Vec::new();
+    if count.is_some() {
+        params.push(("count", count.unwrap().to_string()));
+    }
+    if offset.is_some() {
+        params.push(("offset", offset.unwrap().to_string()));
+    }
+
+    match get_api("categories", &params) {
+        Ok(resp) => {
+            parse_response(&resp)
+        }
+        Err(e) => { Err(e) }
+    }
+}
+
+pub fn get_category(id: u64) -> Result<Category, String> {
+    match get_api("category", &vec![("id", id.to_string())]) {
+        Ok(resp) => {
+            parse_response(&resp)
+        }
+        Err(e) => { Err(e) }
+    }
+}
+
+fn parse_response<T>(resp: &str) -> Result<T, String> where T: serde::Deserialize {
+    match serde_json::from_str(&resp) {
+        Ok(t) => { Ok(t) }
+        Err(e) => { Err(format!("{:?}", e)) }
+    }
+}
+
+fn get_api(url_extension: &str, params: &[(&'static str, String)]) -> Result<String, String> {
+    let client = Client::new();
+    let mut url = Url::parse(API_URI).unwrap().join(url_extension).unwrap();
+    url.query_pairs_mut().extend_pairs(params);
+    let req = client.get(url);
+
+    match req.send() {
+        Ok(mut res) => {
+            use std::io::Read;
+
+            let mut body: Vec<u8> = Vec::new();
+            match res.read_to_end(&mut body) {
+                Ok(_) => { Ok(String::from_utf8(body).unwrap()) }
+                Err(e) => { Err(format!("{}", e)) }
+            }
+        }
+        Err(e) => { Err(format!("{:?}", e)) }
+    }
+}
