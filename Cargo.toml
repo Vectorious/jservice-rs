@@ -2,10 +2,18 @@
 name = "jservice"
 version = "0.1.0"
 authors = ["Brandon King <wektorious@gmail.com>"]
-build = "build.rs"
 
 description = "A jService API wrapper."
+
+documentation = "https://vectorious.github.io/jservice-rs/"
+repository = "https://github.com/Vectorious/jservice-rs"
+keywords = ["trivia", "jeopardy"]
+
+readme = "README.md"
+
 license = "Apache-2.0"
+
+build = "build.rs"
 
 [build-dependencies]
 serde_codegen = "*"
