@@ -16,13 +16,13 @@ license = "Apache-2.0"
 build = "build.rs"
 
 [build-dependencies]
-serde_codegen = "*"
-syntex = "*"
+serde_codegen = "0.7.5"
+syntex = "0.32.0"
 
 [dependencies]
 hyper = "0.9.5"
-serde = "*"
-serde_json = "*"
+serde = "0.7.5"
+serde_json = "0.7.0"
 
 [dependencies.chrono]
 version = "0.2"
