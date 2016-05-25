@@ -128,7 +128,7 @@ fn get_api(url_extension: &str, params: &[(&'static str, String)]) -> Result<Str
 }
 
 /// A jService clue.
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Clue {
     /// The ID of the clue.
     pub id: u64,
@@ -154,7 +154,7 @@ pub struct Clue {
 }
 
 /// A jService category.
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Category {
     /// The ID of the category.
     pub id: u64,
