@@ -113,7 +113,7 @@ pub fn get_category(id: u64) -> Result<Category, String> {
     }
 }
 
-fn parse_response<T>(resp: &str) -> Result<T, String> where T: serde::de::Deserialize {
+fn parse_response<T>(resp: &str) -> Result<T, String> where T: serde::de::DeserializeOwned {
     match serde_json::from_str(&resp) {
         Ok(t) => { Ok(t) }
         Err(e) => { Err(format!("{:?}", e)) }
